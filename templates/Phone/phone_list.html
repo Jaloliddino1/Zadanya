@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Phone List{% endblock %}
+
+{% block content %}
+<h2>Phone List</h2>
+<a href="{% url 'phone_create' %}" class="btn btn-success mb-3">+ Add Phone</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for phone in phones %}
+        <tr>
+            <td>{{ phone.id }}</td>
+            <td>{{ phone.name }}</td>
+            <td>{{ phone.brand }}</td>
+            <td>${{ phone.price }}</td>
+            <td>
+                {% if is_admin %}
+                    <a href="{% url 'phone_update' phone.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'phone_delete' phone.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="{% url 'publish_article' phone.id %}" class="btn btn-secondary btn-sm">Telefonni chop etish</a>
+                {% endif %}
+
+                {% if perms.business.can_publish_phone %}
+                    <a href="{% url 'publish_phone' phone.id %}" class="btn btn-info btn-sm">Publish</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

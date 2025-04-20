@@ -1,0 +1,51 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Phone
+from .forms import PhoneForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+def not_client(user):
+    return not user.groups.filter(name='Client').exists()
+
+
+def phone_list(request):
+    phones = Phone.objects.all()
+    is_admin = request.user.groups.filter(name='Admin').exists()  # flag
+    return render(request, 'Phone/phone_list.html', {
+        'phones': phones,
+        'is_admin': is_admin  # shablon uchun
+    })
+
+@login_required
+@user_passes_test(not_client)
+def phone_create(request):
+    form = PhoneForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('phone_list')
+    return render(request, 'Phone/phone_form.html', {'form': form})
+@login_required
+@user_passes_test(not_client)
+def phone_update(request, id):
+    phone = get_object_or_404(Phone, id=id)
+    form = PhoneForm(request.POST or None, instance=phone)
+    if form.is_valid():
+        form.save()
+        return redirect('phone_list')
+    return render(request, 'Phone/phone_form.html', {'form': form})
+@login_required
+@user_passes_test(not_client)
+def phone_delete(request, id):
+    phone = get_object_or_404(Phone, id=id)
+    if request.method == 'POST':
+        phone.delete()
+        return redirect('phone_list')
+    return render(request, 'Phone/phone_confirm_delete.html', {'phone': phone})
+from django.contrib.auth.decorators import permission_required
+
+@permission_required('business.can_publish_phone', raise_exception=True)
+def publish_phone(request, phone_id):
+    phone = get_object_or_404(Phone, id=phone_id)
+    phone.published = True
+    phone.save()
+    return redirect('phone_list')
