@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2>Phone List</h2>
-<a href="{% url 'phone_create' %}" class="btn btn-success mb-3">+ Add Phone</a>
+<a href="{% url 'business:phone_create' %}" class="btn btn-success mb-3">+ Add Phone</a>
 
 <table class="table table-striped">
     <thead>
@@ -24,13 +24,13 @@
             <td>${{ phone.price }}</td>
             <td>
                 {% if is_admin %}
-                    <a href="{% url 'phone_update' phone.id %}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{% url 'phone_delete' phone.id %}" class="btn btn-danger btn-sm">Delete</a>
-                    <a href="{% url 'publish_article' phone.id %}" class="btn btn-secondary btn-sm">Telefonni chop etish</a>
+                    <a href="{% url 'business:phone_update' phone.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'business:phone_delete' phone.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="{% url 'business:publish_phone' phone.id %}" class="btn btn-secondary btn-sm">Telefonni chop etish</a>
                 {% endif %}
 
                 {% if perms.business.can_publish_phone %}
-                    <a href="{% url 'publish_phone' phone.id %}" class="btn btn-info btn-sm">Publish</a>
+                    <a href="{% url 'business:publish_phone' phone.id %}" class="btn btn-info btn-sm">Publish</a>
                 {% endif %}
             </td>
         </tr>

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from accounts.forms import UserForm, LoginForm
+from .forms import UserForm, LoginForm
 from django.contrib.auth import login, logout
 
 
@@ -30,11 +30,11 @@ def login_user(request):
         if form.is_valid():
             user = form.cleaned_data.get('user')
             login(request, user)
-            return redirect('phone_list')  # Telefonlar ro'yxati sahifasiga
+            return redirect('business:phone_list')
         return render(request, 'accounts/login.html', {'form': form})
 
 
 
 def logout_user(request):
     logout(request)
-    return redirect('accounts:login_user')  # Login sahifasiga qaytarish
+    return redirect('accounts:login_user')
