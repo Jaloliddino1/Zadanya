@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Phone
 from .forms import PhoneForm
@@ -9,11 +10,17 @@ def not_client(user):
 
 
 def phone_list(request):
-    phones = Phone.objects.all()
+    q=request.GET.get('q')
+    if q:
+        phones = Phone.objects.filter(Q(name__icontains=q) | Q(brand__icontains=q))
+    else:
+        q=''
+        phones = Phone.objects.all()
     is_admin = request.user.groups.filter(name='Admin').exists()
     return render(request, 'Phone/phone_list.html', {
         'phones': phones,
-        'is_admin': is_admin
+        'is_admin': is_admin,
+        'q':q
     })
 
 @login_required
