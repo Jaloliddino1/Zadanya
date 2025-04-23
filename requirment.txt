@@ -1,0 +1,4 @@
+Django==5.2
+django-extensions==4.1
+psycopg2-binary==2.9.10
+ipython==9.1.0

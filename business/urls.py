@@ -9,5 +9,6 @@ urlpatterns = [
     path('update/<int:id>/', views.phone_update, name='phone_update'),
     path('delete/<int:id>/', views.phone_delete, name='phone_delete'),
     path('publish/<int:phone_id>/', views.publish_phone, name='publish_phone'),
-
+    path('file_upload/',views.file_upload, name='file_upload'),
+    path('file_list/',views.file_list, name='file_list'),
 ]
