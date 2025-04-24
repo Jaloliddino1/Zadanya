@@ -26,20 +26,24 @@ def phone_list(request):
 @login_required
 @permission_required('business.can_publish_phone', raise_exception=True)
 def phone_create(request):
-    form = PhoneForm(request.POST or None)
+    form = PhoneForm(request.POST,request.FILES)
     if form.is_valid():
         form.save()
         return redirect('business:phone_list')
     return render(request, 'Phone/phone_form.html', {'form': form})
+
+
 @login_required
 @permission_required('business.can_publish_phone', raise_exception=True)
 def phone_update(request, id):
     phone = get_object_or_404(Phone, id=id)
-    form = PhoneForm(request.POST or None, instance=phone)
+    form = PhoneForm(request.POST ,request.FILES, instance=phone)
     if form.is_valid():
         form.save()
         return redirect('business:phone_list')
     return render(request, 'Phone/phone_form.html', {'form': form})
+
+
 @login_required
 @permission_required('business.can_publish_phone', raise_exception=True)
 def phone_delete(request, id):
@@ -50,12 +54,14 @@ def phone_delete(request, id):
     return render(request, 'Phone/phone_confirm_delete.html', {'phone': phone})
 from django.contrib.auth.decorators import permission_required
 
+
 @permission_required('business.can_publish_phone', raise_exception=True)
 def publish_phone(request, phone_id):
     phone = get_object_or_404(Phone, id=phone_id)
     phone.published = True
     phone.save()
     return redirect('business:phone_list')
+
 
 
 def file_upload(request):
@@ -69,7 +75,15 @@ def file_upload(request):
     return render(request,'file/file_upload.html',{'form':form})
 
 
+
 def file_list(request):
     files=Phone.objects.all()
 
     return render(request,'file/file_list.html',{'files': files})
+
+
+
+
+def phone_detail(request,id=None):
+    phone=Phone.objects.get(id=id)
+    return render(request,'Phone/detail.html',context={'phone': phone})

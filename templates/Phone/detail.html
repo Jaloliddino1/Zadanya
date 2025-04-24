@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ phone.name }} – Phone tafsiloti
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <img src=https://i.pinimg.com/originals/e8/e2/3e/e8e23ed0d7e3319b5c60a1fc56e9508e.png
+                     class="card-img-top rounded-top-4" alt="Kitob rasmi">
+                <div class="card-body">
+                    <h4 class="card-title text-primary fw-bold">{{ phone.name }}</h4>
+                    <h5 class="text-success mb-3">💰 {{ phone.price }} so‘m</h5>
+                    <p class="card-text text-muted" style="line-height: 1.7;">
+                        {{ phone.brand }}
+                    </p>
+                    <div class="text-end">
+                        <a href="{% url 'business:phone_list' %}" class="btn btn-outline-primary">
+                            🔙 Ortga qaytish
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
